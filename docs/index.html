@@ -1,1 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>正在跳转到 baogee.net | Redirecting to baogee.net</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        neutral: '#F5F7FA',
+                        dark: '#0F172A',
+                        border: '#DBEAFE'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        .lang-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 10;
+        }
+        .lang-switch-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .lang-switch-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .lang-switch-btn i {
+            font-size: 1.1rem;
+        }
+        
+        @layer utilities {
+            .btn-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .redirect-card {
+                @apply bg-white rounded-2xl shadow-xl overflow-hidden transform;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                position: relative;
+                border: none;
+                background-clip: padding-box;
+                border: solid 2px transparent;
+                background-image: linear-gradient(white, white), 
+                                  linear-gradient(135deg, #165DFF, #36BFFA);
+                background-origin: border-box;
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            }
+            .redirect-card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(to right, #36BFFA, #165DFF);
+                border-radius: 4px 4px 0 0;
+                opacity: 0.7;
+                transition: opacity 0.3s ease;
+            }
+            .redirect-card:hover {
+                background-image: linear-gradient(white, white), 
+                                  linear-gradient(135deg, #0d50d4, #2a9bd9);
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 15px 10px -6px rgba(0, 0, 0, 0.1),
+                            0 0 30px rgba(22, 93, 255, 0.2);
+            }
+            .redirect-card:hover::before {
+                opacity: 1;
+                background: linear-gradient(to right, #2a9bd9, #0d50d4);
+            }
+            .redirect-card-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+            .section-gradient {
+                background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            }
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(22, 93, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #165DFF;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #165DFF, #36BFFA);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(22, 93, 255, 0.4);
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #0d50d4, #2a9bd9);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(22, 93, 255, 0.6);
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen flex flex-col">
+    <!-- 跳转页面 -->
+    <div class="min-h-screen flex flex-col">
+        <!-- 页头 -->
+        <header class="bg-gradient-to-r from-primary to-secondary py-12 px-4 text-center relative">
+            <!-- 语言切换按钮 -->
+            <div class="lang-switch-container">
+                <button id="lang-switch-btn" class="lang-switch-btn">
+                    <i class="fas fa-language"></i>
+                    <span id="current-lang">EN</span>
+                </button>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="flex justify-center">
+                    <div class="logo">➡️</div>
+                </div>
+                
+                <h1 id="main-title" class="text-4xl md:text-5xl font-bold text-white mb-4">正在跳转...</h1>
+                <p id="subtitle" class="text-xl text-blue-100 max-w-2xl mx-auto">您即将被自动跳转到 <strong>baogee.net</strong></p>
+            </div>
+        </header>
 
+        <!-- 主要内容区 -->
+        <main class="flex-grow py-12 px-4 section-gradient">
+            <div class="max-w-2xl mx-auto">
+                <!-- 跳转卡片 -->
+                <div class="redirect-card p-8">
+                    <div class="redirect-card-content">
+                        <div class="spinner"></div>
+                        
+                        <p id="redirect-message" class="text-gray-600 text-center mb-6">
+                            如果您的浏览器没有自动跳转，请点击下方按钮：
+                        </p>
+                        
+                        <div class="text-center">
+                            <a href="https://baogee.net" id="redirect-btn" class="btn">立即访问 baogee.net</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <div class="bg-white py-6 px-4 text-center text-gray-600">
+            <p id="copyright">© 2025 baogee.net. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        // 当前语言状态
+        let currentLanguage = 'zh';
+        
+        // 翻译映射对象
+        const translations = {
+            zh: {
+                title: "正在跳转...",
+                subtitle: "您即将被自动跳转到 <strong>baogee.net</strong>",
+                redirectMessage: "如果您的浏览器没有自动跳转，请点击下方按钮：",
+                redirectBtn: "立即访问 baogee.net",
+                copyright: "© 2025 baogee.net. All rights reserved."
+            },
+            en: {
+                title: "Redirecting...",
+                subtitle: "You are being automatically redirected to <strong>baogee.net</strong>",
+                redirectMessage: "If your browser does not redirect automatically, please click the button below:",
+                redirectBtn: "Visit baogee.net now",
+                copyright: "© 2025 baogee.net. All rights reserved."
+            }
+        };
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            // 获取语言切换按钮
+            const langSwitchBtn = document.getElementById('lang-switch-btn');
+            
+            // 更新页面文本
+            function updatePageText(lang) {
+                const data = translations[lang];
+                
+                // 更新标题和副标题
+                document.getElementById('main-title').textContent = data.title;
+                document.getElementById('subtitle').innerHTML = data.subtitle;
+                document.getElementById('redirect-message').textContent = data.redirectMessage;
+                document.getElementById('redirect-btn').textContent = data.redirectBtn;
+                document.getElementById('copyright').textContent = data.copyright;
+            }
+            
+            // 切换到中文
+            function switchToChinese() {
+                currentLanguage = 'zh';
+                document.getElementById('current-lang').textContent = '中文';
+                updatePageText('zh');
+                localStorage.setItem('userLanguage', 'zh');
+            }
+            
+            // 切换到英文
+            function switchToEnglish() {
+                currentLanguage = 'en';
+                document.getElementById('current-lang').textContent = 'EN';
+                updatePageText('en');
+                localStorage.setItem('userLanguage', 'en');
+            }
+            
+            // 绑定语言切换按钮事件
+            langSwitchBtn.addEventListener('click', function() {
+                if (currentLanguage === 'zh') {
+                    switchToEnglish();
+                } else {
+                    switchToChinese();
+                }
+            });
+            
+            // 检测浏览器语言
+            function detectBrowserLanguage() {
+                const savedLang = localStorage.getItem('userLanguage');
+                if (savedLang) {
+                    if (savedLang === 'en') {
+                        switchToEnglish();
+                    } else {
+                        switchToChinese();
+                    }
+                } else {
+                    const lang = navigator.language || navigator.userLanguage;
+                    if (lang.includes('zh')) {
+                        switchToChinese();
+                    } else {
+                        switchToEnglish();
+                    }
+                }
+            }
+            
+            // 初始化语言
+            detectBrowserLanguage();
+            
+            // 立即跳转
+            window.location.replace("https://baogee.net");
+            
+            // 备用方案：如果上述方法失效，使用setTimeout
+            setTimeout(function() {
+                window.location.href = "https://baogee.net";
+            }, 100);
+        });
+    </script>
+</body>
+</html>
